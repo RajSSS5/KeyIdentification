@@ -153,9 +153,9 @@ class WavenetClassifier():
         model.add(keras.layers.Dense(128))
         model.add(keras.layers.Activation('relu'))
         model.add(keras.layers.Dropout(0.5))
-        model.add(keras.layers.Dense(24))
-        model.add(keras.layers.Activation('relu'))
-        model.add(keras.layers.Dropout(0.5))
-        model.add(keras.layers.Dense(1,activation='softmax', name='data_output'))
+        model.add(keras.layers.Dense(24, activation='softmax', name='data_output'))
+        # model.add(keras.layers.Activation('relu'))
+        # model.add(keras.layers.Dropout(0.5))
+        # model.add(keras.layers.Dense(1,activation='softmax', name='data_output'))
       
         return model

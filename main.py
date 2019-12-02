@@ -16,31 +16,34 @@ from datasets import GiantStepsDataset
 import util
 
 
+encoded_key_vals = np.eye(24)
+encoded_key_vals = [tuple(arr) for arr in encoded_key_vals]
+
 key_vals = {
-    0:'A:minor',
-    1:'A:major',
-    2:'Ab:minor',
-    3:'Ab:major',
-    4:'B:minor',
-    5:'B:major',
-    6:'Bb:minor',
-    7:'Bb:major',
-    8:'C:minor',
-    9:'C:major',
-    10:'D:minor',
-    11:'D:major',
-    12:'Db:minor',
-    13:'Db:major',
-    14:'E:minor',
-    15:'E:major',
-    16:'Eb:minor',
-    17:'Eb:major',
-    18:'F:major',
-    19:'F:minor',
-    20:'G:minor',
-    21:'G:major',
-    22:'Gb:minor',
-    23:'Gb:major'
+    encoded_key_vals[0]:'A:minor',
+    encoded_key_vals[1]:'A:major',
+    encoded_key_vals[2]:'Ab:minor',
+    encoded_key_vals[3]:'Ab:major',
+    encoded_key_vals[4]:'B:minor',
+    encoded_key_vals[5]:'B:major',
+    encoded_key_vals[6]:'Bb:minor',
+    encoded_key_vals[7]:'Bb:major',
+    encoded_key_vals[8]:'C:minor',
+    encoded_key_vals[9]:'C:major',
+    encoded_key_vals[10]:'D:minor',
+    encoded_key_vals[11]:'D:major',
+    encoded_key_vals[12]:'Db:minor',
+    encoded_key_vals[13]:'Db:major',
+    encoded_key_vals[14]:'E:minor',
+    encoded_key_vals[15]:'E:major',
+    encoded_key_vals[16]:'Eb:minor',
+    encoded_key_vals[17]:'Eb:major',
+    encoded_key_vals[18]:'F:major',
+    encoded_key_vals[19]:'F:minor',
+    encoded_key_vals[20]:'G:minor',
+    encoded_key_vals[21]:'G:major',
+    encoded_key_vals[22]:'Gb:minor',
+    encoded_key_vals[23]:'Gb:major'
     
 }
         
@@ -105,7 +108,7 @@ def inference(config_letter, config_key_type, cla):
         if not cla.source.endswith('/'):
             cla.source += '/'
         filenames = [filename for filename in os.listdir(cla.source) if filename.endswith('.wav')]
-        print(filenames)
+
 
     jams_directory = r"dataset\annotations\jams"
 
@@ -123,7 +126,7 @@ def inference(config_letter, config_key_type, cla):
         data_val = jamsObj.annotations[0].data[0].value
 
         print(model_key_type.predict(Sxx))
-        result = key_vals[model_key_type.predict(Sxx)[0][0]]
+        result = key_vals[tuple(model_key_type.predict(Sxx)[0].astype(int))]
         print('File: ', filename, 'Prediction: ', result, 'Actual: ', data_val)
 
 

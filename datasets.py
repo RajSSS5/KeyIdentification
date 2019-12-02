@@ -10,7 +10,8 @@ import logging
 import scipy
 
 jam = jams.JAMS()
-
+encoded_key_vals = np.eye(24)
+encoded_key_vals = [tuple(arr) for arr in encoded_key_vals]
 
 class GiantStepsDataset():
 
@@ -19,30 +20,30 @@ class GiantStepsDataset():
         self.activeSequences = 0
         self.jams_directory = r"dataset\annotations\jams"
         self.key_vals = {
-            'A:minor': 0,
-            'A:major':1,
-            'Ab:minor':2,
-            'Ab:major':3,
-            'B:minor':4,
-            'B:major':5,
-            'Bb:minor':6,
-            'Bb:major':7,
-            'C:minor':8,
-            'C:major':9,
-            'D:minor':10,
-            'D:major':11,
-            'Db:minor':12,
-            'Db:major':13,
-            'E:minor':14,
-            'E:major':15,
-            'Eb:minor':16,
-            'Eb:major':17,
-            'F:major':18,
-            'F:minor':19,
-            'G:minor':20,
-            'G:major':21,
-            'Gb:minor':22,
-            'Gb:major':23,
+            'A:minor': encoded_key_vals[0],
+            'A:major':encoded_key_vals[1],
+            'Ab:minor':encoded_key_vals[2],
+            'Ab:major':encoded_key_vals[3],
+            'B:minor':encoded_key_vals[4],
+            'B:major':encoded_key_vals[5],
+            'Bb:minor':encoded_key_vals[6],
+            'Bb:major':encoded_key_vals[7],
+            'C:minor':encoded_key_vals[8],
+            'C:major':encoded_key_vals[9],
+            'D:minor':encoded_key_vals[10],
+            'D:major':encoded_key_vals[11],
+            'Db:minor':encoded_key_vals[12],
+            'Db:major':encoded_key_vals[13],
+            'E:minor':encoded_key_vals[14],
+            'E:major':encoded_key_vals[15],
+            'Eb:minor':encoded_key_vals[16],
+            'Eb:major':encoded_key_vals[17],
+            'F:major':encoded_key_vals[18],
+            'F:minor':encoded_key_vals[19],
+            'G:minor':encoded_key_vals[20],
+            'G:major':encoded_key_vals[21],
+            'Gb:minor':encoded_key_vals[22],
+            'Gb:major':encoded_key_vals[23],
             
         }
 
@@ -77,41 +78,21 @@ class GiantStepsDataset():
                     jams_path = os.path.join(self.jams_directory, jams_name)
                     jamsObj = jams.load(jams_path)
                     if(jamsObj):
-                        #print([sequence,letter,key_type])
-                        # sequence = np.array(sequence)
-                        # print("Reading: ", os.path.join(self.directory, filenames[i]))  
+
                         data_val = jamsObj.annotations[0].data[0].value
 
                         sequence = sequence[:input_length]
                         f, t, Sxx = scipy.signal.spectrogram(sequence, 16000)
                         sequence = np.array(Sxx)
-                        
-                        # sequence.reshape(129,2232,1)
                         sequences.append(sequence)
-
                         key_types.append(self.key_vals[data_val])
                 else:
                     continue
             
             sequences = np.array(sequences)
             sequences = np.expand_dims(sequences, axis=-1)
-            # sequences.reshape(50,129,2232,1)
-
             key_types = np.array(key_types)
-            # print(sequences.shape)
-
-            # print(sequences[0].shape)
-
             batch = {'data_input': sequences}, {'data_output': key_types}
 
-            
             yield(batch)
-
-                                # print(sequence.shape)
-                    # if(return_type == 'letter'):
-                    #     sample = {'data_input': sequence, 'key_types': key_type}, {'letters': letter}
-                    # elif(return_type == 'key_type'):
-                    #     sample = {'data_input': sequence}, {'key_types': key_type} 
-                    
-                    # yield(sample)
 
