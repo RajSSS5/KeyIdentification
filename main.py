@@ -125,7 +125,6 @@ def inference(config_letter, config_key_type, cla):
         jamsObj = jams.load(jams_path)
         data_val = jamsObj.annotations[0].data[0].value
 
-        print(model_key_type.predict(Sxx))
         result = key_vals[tuple(model_key_type.predict(Sxx)[0].astype(int))]
         print('File: ', filename, 'Prediction: ', result, 'Actual: ', data_val)
 
